@@ -4,8 +4,7 @@ import os
 from pydantic import BaseModel
 from typing import Optional
 
-
-#######################################################################################
+"""
 ## ABOUT:
 ## This script evaluates all the IAM identities in an account for admin privileges. 
 ## 
@@ -21,7 +20,7 @@ from typing import Optional
 ## If using profile credentials set in your AWS credentials file:
 ##      $ python3 script-name.py [profile_name]
 ## 
-
+"""
 
 
 ## Data model for list of findings from the policies analysis.
@@ -416,17 +415,18 @@ def get_profile_from_env():
 
 if __name__ == "__main__":
     aws_profile = None
-    
+        
+    if len(sys.argv) > 2:
+        print("Too many arguments")
+        print("Usage: python iam-audit.py <aws_profile>")
+        sys.exit(1)
+        
     if len(sys.argv) == 2:
         aws_profile = sys.argv[1]
 
-    elif aws_profile is None:
+    if aws_profile is None:
         aws_profile = get_profile_from_env()    
-    
-    else:
-        print("Usage: python script_name.py <aws_profile>")
-        sys.exit(1)
-    
+
     get_data(aws_profile)
     report()
 
